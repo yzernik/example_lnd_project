@@ -1,0 +1,37 @@
+version: '2'
+services:
+
+    lnd:
+        image: lnzap/lnd:latest
+        container_name: lnd-node
+        ports:
+          - 9735:9735
+          - 10009:10009
+        volumes:
+          - lnd-data:/lnd
+        command: |
+          --bitcoin.active
+          --bitcoin.simnet
+          --debuglevel=info
+          --bitcoin.node=neutrino
+          --neutrino.connect=testnet1-btcd.zaphq.io
+          --neutrino.connect=testnet2-btcd.zaphq.io
+          --autopilot.active
+          --rpclisten=0.0.0.0:10009
+
+    app:
+        image: app
+        container_name: app
+        build:
+          context: ../
+          dockerfile: docker/app/Dockerfile
+        volumes:
+          - lnd-data:/lnd
+        links:
+          - "lnd:lnd"
+        entrypoint: ["./start-app.sh"]
+
+volumes:
+  # lnd_dir volume is needed for sharing tht tls certificate
+  lnd-data:
+    driver: local
