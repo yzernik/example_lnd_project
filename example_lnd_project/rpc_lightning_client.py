@@ -1,5 +1,6 @@
 from typing import Optional
 
+import codecs
 import logging
 import requests
 import json
@@ -8,10 +9,6 @@ import os
 
 import rpc_pb2 as ln
 import rpc_pb2_grpc as lnrpc
-
-import codecs
-
-import socket
 
 
 logger = logging.getLogger(__name__)
@@ -22,6 +19,7 @@ logger = logging.getLogger(__name__)
 # we need to use that cipher suite otherwise there will be a handhsake
 # error when we communicate with the lnd rpc server.
 os.environ["GRPC_SSL_CIPHER_SUITES"] = 'HIGH+ECDSA'
+os.environ["GRPC_VERBOSITY"] = 'debug'
 
 # Lnd cert is at ~/.lnd/tls.cert on Linux and
 # ~/Library/Application Support/Lnd/tls.cert on Mac
@@ -42,31 +40,6 @@ class RPCLightningClient:
     """Access a lightning deamon using RPC."""
 
     def get_wallet_balance(self):
-        # Check if ports are open
-        checkIsOpen('lnd', 9736)
-        checkIsOpen('lnd', 9737)
-        checkIsOpen('lnd', 9738)
-        checkIsOpen('lnd', 9739)
-        checkIsOpen('lnd', 10008)
-        checkIsOpen('lnd', 10009)
-        checkIsOpen('lnd', 10010)
-        checkIsOpen('lnd', 10011)
-        checkIsOpen('lnd', 10012)
-        checkIsOpen('lnd', 10013)
-
         # Retrieve and display the wallet balance
         response = stub.WalletBalance(ln.WalletBalanceRequest(), metadata=[('macaroon', macaroon)])
         return response.total_balance
-
-
-def isOpen(ip,port):
-   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-   try:
-      s.connect((ip, int(port)))
-      s.shutdown(2)
-      return True
-   except:
-      return False
-
-def checkIsOpen(ip,port):
-    print("is open? isOpen('{}', {}): ".format(ip, port) + str(isOpen(ip, port)))
