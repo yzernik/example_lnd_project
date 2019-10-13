@@ -11,8 +11,6 @@ import rpc_pb2 as ln
 import rpc_pb2_grpc as lnrpc
 
 
-logger = logging.getLogger(__name__)
-
 # Follow the code from here: https://dev.lightning.community/guides/python-grpc/
 
 # Due to updated ECDSA generated tls.cert we need to let gprc know that
