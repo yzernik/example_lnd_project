@@ -33,7 +33,6 @@ services:
         links:
           - "lnd:lnd"
         entrypoint: ["./start-app.sh"]
-        # command: tail -f /dev/null
 
 volumes:
   # lnd_dir volume is needed for sharing tht tls certificate
