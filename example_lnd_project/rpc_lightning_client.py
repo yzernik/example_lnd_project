@@ -33,19 +33,6 @@ channel = grpc.secure_channel('lnd:10009', creds)
 stub = lnrpc.LightningStub(channel)
 
 
-def isOpen(ip,port):
-   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-   try:
-      s.connect((ip, int(port)))
-      s.shutdown(2)
-      return True
-   except:
-      return False
-
-def checkIsOpen(ip,port):
-    print("is open? isOpen('{}', {}): ".format(ip, port) + str(isOpen(ip, port)))
-
-
 # Lnd admin macaroon is at ~/.lnd/data/chain/bitcoin/simnet/admin.macaroon on Linux and
 # ~/Library/Application Support/Lnd/data/chain/bitcoin/simnet/admin.macaroon on Mac
 with open(os.path.expanduser('/lnd/.lnd/data/chain/bitcoin/testnet/admin.macaroon'), 'rb') as f:
@@ -72,3 +59,16 @@ class RPCLightningClient:
         # Retrieve and display the wallet balance
         response = stub.WalletBalance(ln.WalletBalanceRequest(), metadata=[('macaroon', macaroon)])
         return response.total_balance
+
+
+def isOpen(ip,port):
+   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+   try:
+      s.connect((ip, int(port)))
+      s.shutdown(2)
+      return True
+   except:
+      return False
+
+def checkIsOpen(ip,port):
+    print("is open? isOpen('{}', {}): ".format(ip, port) + str(isOpen(ip, port)))
