@@ -6,7 +6,6 @@ RUN apt-get update && apt-get install -y software-properties-common && add-apt-r
 RUN ln -sfn /usr/bin/python3.6 /usr/bin/python3 && ln -sfn /usr/bin/python3 /usr/bin/python && ln -sfn /usr/bin/pip3 /usr/bin/pip
 
 RUN apt-get update && apt-get install -y \
-    python3-pyqt5 \
     curl \
     git
 

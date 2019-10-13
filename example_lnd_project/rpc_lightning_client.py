@@ -27,7 +27,7 @@ os.environ.pop('https_proxy', None)
 
 # Lnd cert is at ~/.lnd/tls.cert on Linux and
 # ~/Library/Application Support/Lnd/tls.cert on Mac
-cert = open(os.path.expanduser('~/lnd/tls.cert'), 'rb').read()
+cert = open(os.path.expanduser('/lnd/.lnd/tls.cert'), 'rb').read()
 creds = grpc.ssl_channel_credentials(cert)
 channel = grpc.secure_channel('lnd:10009', creds)
 stub = lnrpc.LightningStub(channel)
@@ -48,7 +48,7 @@ def checkIsOpen(ip,port):
 
 # Lnd admin macaroon is at ~/.lnd/data/chain/bitcoin/simnet/admin.macaroon on Linux and
 # ~/Library/Application Support/Lnd/data/chain/bitcoin/simnet/admin.macaroon on Mac
-with open(os.path.expanduser('~/.lnd/data/chain/bitcoin/simnet/admin.macaroon'), 'rb') as f:
+with open(os.path.expanduser('/lnd/.lnd/data/chain/bitcoin/testnet/admin.macaroon'), 'rb') as f:
     macaroon_bytes = f.read()
     macaroon = codecs.encode(macaroon_bytes, 'hex')
 
