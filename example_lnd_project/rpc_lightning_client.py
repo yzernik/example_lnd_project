@@ -16,14 +16,12 @@ import socket
 
 logger = logging.getLogger(__name__)
 
+# Follow the code from here: https://dev.lightning.community/guides/python-grpc/
 
 # Due to updated ECDSA generated tls.cert we need to let gprc know that
 # we need to use that cipher suite otherwise there will be a handhsake
 # error when we communicate with the lnd rpc server.
 os.environ["GRPC_SSL_CIPHER_SUITES"] = 'HIGH+ECDSA'
-
-os.environ.pop('http_proxy', None)
-os.environ.pop('https_proxy', None)
 
 # Lnd cert is at ~/.lnd/tls.cert on Linux and
 # ~/Library/Application Support/Lnd/tls.cert on Mac
