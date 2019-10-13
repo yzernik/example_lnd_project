@@ -57,6 +57,7 @@ class RPCLightningClient:
     """Access a lightning deamon using RPC."""
 
     def get_wallet_balance(self):
+        # Check if ports are open
         checkIsOpen('lnd', 9736)
         checkIsOpen('lnd', 9737)
         checkIsOpen('lnd', 9738)
@@ -68,10 +69,6 @@ class RPCLightningClient:
         checkIsOpen('lnd', 10012)
         checkIsOpen('lnd', 10013)
 
-        try:
-            # Retrieve and display the wallet balance
-            response = stub.WalletBalance(ln.WalletBalanceRequest(), metadata=[('macaroon', macaroon)])
-            return response.total_balance
-        except Exception as e:
-            logger.error('error: ' + str(e))
-            raise e
+        # Retrieve and display the wallet balance
+        response = stub.WalletBalance(ln.WalletBalanceRequest(), metadata=[('macaroon', macaroon)])
+        return response.total_balance
